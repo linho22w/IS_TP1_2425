@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace IS_trabalho.Models
+namespace ProducaoAPI.Models
 {
     public class Teste
     {

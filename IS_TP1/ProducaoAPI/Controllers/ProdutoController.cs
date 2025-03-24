@@ -1,11 +1,11 @@
-﻿using IS_trabalho.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using static System.Reflection.Metadata.BlobBuilder;
+using ProducaoAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace IS_trabalho.Controllers
+namespace ProducaoAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -33,7 +33,6 @@ namespace IS_trabalho.Controllers
                             item.ID_Produto = Convert.ToInt32(reader["ID_Produto"]);
                             item.Codigo_Peca = Convert.ToString(reader["Codigo_Peca"]);
                             item.Data_Producao = Convert.ToDateTime(reader["Data_producao"]);
-                            //item.Hora_Producao = Convert.ToDateTime(reader["editora"]);
                             item.Tempo_Producao = Convert.ToInt32(reader["Tempo_Producao"]);
                             produtos.Add(item);
                         }
