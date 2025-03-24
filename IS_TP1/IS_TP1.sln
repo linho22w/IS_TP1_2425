@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProducaoAPI", "ProducaoAPI.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sistema legado", "..\sistema legado\sistema legado.csproj", "{11C11341-A58A-42A0-B72A-821638D433C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaProducaoDesktop", "..\..\..\..\Downloads\SistemaProducaoDesktop\SistemaProducaoDesktop\SistemaProducaoDesktop.csproj", "{17B54530-29B4-7039-356E-29CA4F332E43}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{11C11341-A58A-42A0-B72A-821638D433C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11C11341-A58A-42A0-B72A-821638D433C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11C11341-A58A-42A0-B72A-821638D433C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17B54530-29B4-7039-356E-29CA4F332E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17B54530-29B4-7039-356E-29CA4F332E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17B54530-29B4-7039-356E-29CA4F332E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17B54530-29B4-7039-356E-29CA4F332E43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
