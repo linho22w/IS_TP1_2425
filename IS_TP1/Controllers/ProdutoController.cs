@@ -9,7 +9,7 @@ namespace IS_trabalho.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Values : ControllerBase
+    public class ProdutoController : ControllerBase
     {
         string sqlConnectionString = "Data Source=localhost\\MEIBI2025;Initial Catalog=Producao;Integrated Security=True;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         // GET: api/<Values>
