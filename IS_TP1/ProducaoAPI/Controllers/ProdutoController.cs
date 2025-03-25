@@ -33,6 +33,7 @@ namespace ProducaoAPI.Controllers
                             item.ID_Produto = Convert.ToInt32(reader["ID_Produto"]);
                             item.Codigo_Peca = Convert.ToString(reader["Codigo_Peca"]);
                             item.Data_Producao = Convert.ToDateTime(reader["Data_producao"]);
+                            item.Hora_Producao = TimeSpan.Parse(reader["Hora_Producao"].ToString());
                             item.Tempo_Producao = Convert.ToInt32(reader["Tempo_Producao"]);
                             produtos.Add(item);
                         }
@@ -59,7 +60,7 @@ namespace ProducaoAPI.Controllers
 
                 using (SqlConnection con = new SqlConnection(sqlConnectionString))
                 {
-                    using (SqlCommand cmd = new SqlCommand("sp_InsertProduto", con))
+                    using (SqlCommand cmd = new SqlCommand("sp_InserirProduto", con))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
