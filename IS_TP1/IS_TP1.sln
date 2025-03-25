@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProducaoAPI", "ProducaoAPI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaLegado", "sistema legado\SistemaLegado.csproj", "{8A74052A-7B40-7C13-C345-067FB5CF8EF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaProducaoDesktop", ""C:\Users\pauli\source\repos\IS_TP1_2425\IS_TP1\SistemaProducaoDesktop"", "{A86083C5-4B1D-0786-3096-00C1E132C5C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaProducaoDesktop", "SistemaProducaoDesktop\SistemaProducaoDesktop.csproj", "{945E262F-80D3-7222-DAD1-CACFCAF165D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{8A74052A-7B40-7C13-C345-067FB5CF8EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A74052A-7B40-7C13-C345-067FB5CF8EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A74052A-7B40-7C13-C345-067FB5CF8EF6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A86083C5-4B1D-0786-3096-00C1E132C5C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A86083C5-4B1D-0786-3096-00C1E132C5C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A86083C5-4B1D-0786-3096-00C1E132C5C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A86083C5-4B1D-0786-3096-00C1E132C5C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{945E262F-80D3-7222-DAD1-CACFCAF165D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{945E262F-80D3-7222-DAD1-CACFCAF165D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{945E262F-80D3-7222-DAD1-CACFCAF165D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{945E262F-80D3-7222-DAD1-CACFCAF165D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
