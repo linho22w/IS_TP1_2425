@@ -19,6 +19,9 @@ namespace sistema_legado
             ConfigurarTabela();
          
             CarregarDadosDoBanco();
+
+            dtData.Value = new DateTime(2000, 1, 1);
+            dtHora.Value = new DateTime(2000, 1, 1, 0, 0, 0);
         }
 
         private void ConfigurarTabela()
@@ -121,9 +124,11 @@ namespace sistema_legado
                     MessageBox.Show("Tempo deve ser um número!");
                     return;
                 }
-
+                DateTime dataProducao = dtData.Value == DateTime.MinValue ? new DateTime(2000, 1, 1) : dtData.Value;
+                TimeSpan horaProducao = dtHora.Value == DateTime.MinValue ? new TimeSpan(0, 0, 0) : dtHora.Value.TimeOfDay;
                 // Chama o método de inserção
                 AdicionarProduto(codigo, dtData.Value, dtHora.Value.TimeOfDay, tempo);
+                LimparCampos(txtCodigo, txtTempo);
             }
             catch (Exception ex)
             {
