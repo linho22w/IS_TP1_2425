@@ -33,7 +33,8 @@ namespace IS_trabalho.Controllers
                             item.ID_Produto = Convert.ToInt32(reader["ID_Produto"]);
                             item.Codigo_Peca = Convert.ToString(reader["Codigo_Peca"]);
                             item.Data_Producao = Convert.ToDateTime(reader["Data_producao"]);
-                            //item.Hora_Producao = Convert.ToDateTime(reader["editora"]);
+                            item.Hora_Producao = TimeSpan.Parse(reader["Hora_Producao"].ToString());
+                            //item.Hora_Producao = Convert.TimeSpan(reader["Hora_Producao"]);
                             item.Tempo_Producao = Convert.ToInt32(reader["Tempo_Producao"]);
                             produtos.Add(item);
                         }
