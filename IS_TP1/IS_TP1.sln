@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProducaoAPI", "ProducaoAPI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaLegado", "sistema legado\SistemaLegado.csproj", "{8A74052A-7B40-7C13-C345-067FB5CF8EF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaProducaoDesktop", ""C:\Users\pauli\source\repos\IS_TP1_2425\IS_TP1\SistemaProducaoDesktop"", "{A86083C5-4B1D-0786-3096-00C1E132C5C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaProducaoDesktop", "..\..\..\..\Desktop\SistemaProducaoDesktop\SistemaProducaoDesktop\SistemaProducaoDesktop.csproj", "{A86083C5-4B1D-0786-3096-00C1E132C5C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
