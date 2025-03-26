@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProducaoAPI", "ProducaoAPI\ProducaoAPI.csproj", "{3C192B2D-DFE0-4264-879C-B6E98AC34E6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaLegado", "sistema legado\SistemaLegado.csproj", "{8A74052A-7B40-7C13-C345-067FB5CF8EF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaLegado", "SistemaLegado\SistemaLegado.csproj", "{8A74052A-7B40-7C13-C345-067FB5CF8EF6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaProducaoDesktop", "SistemaProducaoDesktop\SistemaProducaoDesktop.csproj", "{945E262F-80D3-7222-DAD1-CACFCAF165D5}"
 EndProject

@@ -58,7 +58,7 @@ namespace sistema_legado
                 try
                 {
                     conn.Open();
-                    using (SqlCommand cmd = new SqlCommand("sp_InsertProduto", conn))
+                    using (SqlCommand cmd = new SqlCommand("sp_InserirProduto", conn))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 

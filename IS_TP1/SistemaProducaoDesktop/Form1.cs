@@ -10,7 +10,7 @@ namespace SistemaProducaoDesktop
     public partial class Form1 : Form
     {
         private List<Produto> produtos = new List<Produto>();
-        private string caminhoFicheiro = "C:\\Users\\pauli\\Desktop\\IS\\dados.txt";
+        private string caminhoFicheiro = "C:\\Users\\pauli\\Desktop\\IS\\TP1\\dados.txt";
 
         public Form1()
         {
@@ -32,33 +32,30 @@ namespace SistemaProducaoDesktop
         {
             using (StreamWriter sw = new StreamWriter(caminhoFicheiro, true))
             {
-                sw.WriteLine($"{produto.Codigo_Peca},{produto.Data_Producao:yyyy-MM-dd},{produto.Hora_Producao:hh\\:mm\\:ss},{produto.Tempo_Producao},{produto.Codigo_Resultado}");
+                sw.WriteLine($"{produto.Codigo_Peca},{produto.Data_Producao:dd-MM-yyyy},{produto.Hora_Producao:hh\\:mm\\:ss},{produto.Tempo_Producao},{produto.Codigo_Resultado}");
             }
         }
 
-        private void btnExecutarSikuli_Click(object sender, EventArgs e)
+        private async void btnExecutarSikuli_Click(object sender, EventArgs e)
         {
-            try
+            string caminhoSikuliX = @"C:\Users\pauli\Desktop\sikulixide-2.0.5.jar";
+            string caminhoScript = @"C:\Users\pauli\Desktop\IS\TP1\sikuli_IS.sikuli\sikuli_IS.py";
+            string caminhoDados = @"C:\Users\pauli\Desktop\IS\TP1\dados.txt";
+
+            ProcessStartInfo psi = new ProcessStartInfo
             {
-                string caminhoJava = "java"; // Ou "C:\\caminho\\para\\java.exe"
-                string caminhoSikuliJar = "C:\\SikuliX\\sikulixide.jar"; 
-                string caminhoScript = "C:\\Users\\anton\\Desktop\\integracao de sistemas\\seu_script.sikuli";
+                FileName = "java",
+                Arguments = $"-jar \"{caminhoSikuliX}\" -r \"{caminhoScript}\" \"{caminhoDados}\"", // Aspas escapadas
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
 
-                Process sikuliProcess = new Process();
-                sikuliProcess.StartInfo.FileName = caminhoJava;
-                sikuliProcess.StartInfo.Arguments = $"-jar \"{caminhoSikuliJar}\" -r \"{caminhoScript}\"";
-                sikuliProcess.StartInfo.UseShellExecute = false;
-                sikuliProcess.StartInfo.CreateNoWindow = true;
-                sikuliProcess.StartInfo.RedirectStandardError = true;
-
-                sikuliProcess.Start();
-
-                // Opcional: esperar conclusão
-                // sikuliProcess.WaitForExit();
-            }
-            catch (Exception ex)
+            using (Process processo = Process.Start(psi))
             {
-                MessageBox.Show($"Erro ao executar o script Sikuli: {ex.Message}");
+                string saida = await processo.StandardOutput.ReadToEndAsync();
+                await Task.Run(() => processo.WaitForExit());
+                MessageBox.Show(saida, "Resultado do SikuliX");
             }
         }
 

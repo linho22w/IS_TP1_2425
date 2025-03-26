@@ -12,44 +12,44 @@ namespace ProducaoAPI.Controllers
     public class ProdutoController : ControllerBase
     {
         string sqlConnectionString = "Data Source=localhost\\MEIBI2025;Initial Catalog=Producao;Integrated Security=True;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        // GET: api/<Values>
-        [HttpGet]
-        public ActionResult Get()
-        {
-            try
-            {
-                Console.Write("GET Request");
-                List<Produto> produtos = new List<Produto>();
-                using (SqlConnection con = new SqlConnection(sqlConnectionString))
-                {
-                    using (SqlCommand cmd = new SqlCommand("sp_GetProdutos", con))
-                    {
-                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        con.Open();
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            Produto item = new Produto();
-                            item.ID_Produto = Convert.ToInt32(reader["ID_Produto"]);
-                            item.Codigo_Peca = Convert.ToString(reader["Codigo_Peca"]);
-                            item.Data_Producao = Convert.ToDateTime(reader["Data_producao"]);
-                            item.Hora_Producao = TimeSpan.Parse(reader["Hora_Producao"].ToString());
-                            item.Tempo_Producao = Convert.ToInt32(reader["Tempo_Producao"]);
-                            produtos.Add(item);
-                        }
-                        con.Close();
+        //// GET: api/<Values>
+        //[HttpGet]
+        //public ActionResult Get()
+        //{
+        //    try
+        //    {
+        //        Console.Write("GET Request");
+        //        List<Produto> produtos = new List<Produto>();
+        //        using (SqlConnection con = new SqlConnection(sqlConnectionString))
+        //        {
+        //            using (SqlCommand cmd = new SqlCommand("sp_GetProdutos", con))
+        //            {
+        //                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //                con.Open();
+        //                SqlDataReader reader = cmd.ExecuteReader();
+        //                while (reader.Read())
+        //                {
+        //                    Produto item = new Produto();
+        //                    item.ID_Produto = Convert.ToInt32(reader["ID_Produto"]);
+        //                    item.Codigo_Peca = Convert.ToString(reader["Codigo_Peca"]);
+        //                    item.Data_Producao = Convert.ToDateTime(reader["Data_producao"]);
+        //                    item.Hora_Producao = TimeSpan.Parse(reader["Hora_Producao"].ToString());
+        //                    item.Tempo_Producao = Convert.ToInt32(reader["Tempo_Producao"]);
+        //                    produtos.Add(item);
+        //                }
+        //                con.Close();
 
-                        return Ok(produtos);
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                Console.WriteLine(ex.ToString());
-                return BadRequest();
-            }
+        //                return Ok(produtos);
+        //            }
+        //        }
+        //    }
+        //    catch (SqlException ex)
+        //    {
+        //        Console.WriteLine(ex.ToString());
+        //        return BadRequest();
+        //    }
 
-        }
+        //}
         // POST api/<Values>
         [HttpPost]
         public ActionResult Post([FromBody] Produto produto)

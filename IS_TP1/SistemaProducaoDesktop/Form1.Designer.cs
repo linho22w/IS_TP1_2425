@@ -36,10 +36,10 @@
             // 
             // btnGerar
             // 
-            btnGerar.Location = new Point(18, 17);
-            btnGerar.Margin = new Padding(3, 4, 3, 4);
+            btnGerar.Location = new Point(22, 21);
+            btnGerar.Margin = new Padding(4, 5, 4, 5);
             btnGerar.Name = "btnGerar";
-            btnGerar.Size = new Size(143, 40);
+            btnGerar.Size = new Size(179, 50);
             btnGerar.TabIndex = 0;
             btnGerar.Text = "Gerar Produto";
             btnGerar.UseVisualStyleBackColor = true;
@@ -50,34 +50,34 @@
             dgvProdutos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvProdutos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvProdutos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProdutos.Location = new Point(18, 80);
-            dgvProdutos.Margin = new Padding(3, 4, 3, 4);
+            dgvProdutos.Location = new Point(22, 100);
+            dgvProdutos.Margin = new Padding(4, 5, 4, 5);
             dgvProdutos.Name = "dgvProdutos";
             dgvProdutos.RowHeadersWidth = 62;
-            dgvProdutos.Size = new Size(635, 270);
+            dgvProdutos.Size = new Size(794, 338);
             dgvProdutos.TabIndex = 1;
             // 
             // btnExecutarSikuli
             // 
-            btnExecutarSikuli.Location = new Point(497, 17);
-            btnExecutarSikuli.Margin = new Padding(3, 4, 3, 4);
+            btnExecutarSikuli.Location = new Point(621, 21);
+            btnExecutarSikuli.Margin = new Padding(4, 5, 4, 5);
             btnExecutarSikuli.Name = "btnExecutarSikuli";
-            btnExecutarSikuli.Size = new Size(143, 40);
+            btnExecutarSikuli.Size = new Size(179, 50);
             btnExecutarSikuli.TabIndex = 2;
-            btnExecutarSikuli.Text = "automatizar";
+            btnExecutarSikuli.Text = "Automatizar";
             btnExecutarSikuli.UseVisualStyleBackColor = true;
             btnExecutarSikuli.Click += btnExecutarSikuli_Click;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(674, 370);
+            ClientSize = new Size(842, 462);
             Controls.Add(dgvProdutos);
             Controls.Add(btnGerar);
             Controls.Add(btnExecutarSikuli);
-            Margin = new Padding(3, 4, 3, 4);
-            MinimumSize = new Size(692, 417);
+            Margin = new Padding(4, 5, 4, 5);
+            MinimumSize = new Size(860, 507);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Sistema de Produção";
