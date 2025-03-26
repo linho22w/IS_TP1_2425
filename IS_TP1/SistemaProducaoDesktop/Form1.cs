@@ -25,10 +25,10 @@ namespace SistemaProducaoDesktop
             dgvProdutos.DataSource = null;
             dgvProdutos.DataSource = produtos;
 
-            SalvarProdutoEmCSV(novoProduto);
+            GuardarProdutoEmCSV(novoProduto);
         }
 
-        private void SalvarProdutoEmCSV(Produto produto)
+        private void GuardarProdutoEmCSV(Produto produto)
         {
             using (StreamWriter sw = new StreamWriter(caminhoFicheiro, true))
             {
@@ -39,7 +39,7 @@ namespace SistemaProducaoDesktop
         private async void btnExecutarSikuli_Click(object sender, EventArgs e)
         {
             string caminhoSikuliX = @"C:\Users\pauli\Desktop\sikulixide-2.0.5.jar";
-            string caminhoScript = @"C:\Users\pauli\Desktop\IS\TP1\sikuli_IS.sikuli\sikuli_IS.py";
+            string caminhoScript = @"C:\Users\pauli\Desktop\IS\TP1\IS_TP1-Sikulix\TP1_sikulix.py";
             string caminhoDados = @"C:\Users\pauli\Desktop\IS\TP1\dados.txt";
 
             ProcessStartInfo psi = new ProcessStartInfo
@@ -55,7 +55,9 @@ namespace SistemaProducaoDesktop
             {
                 string saida = await processo.StandardOutput.ReadToEndAsync();
                 await Task.Run(() => processo.WaitForExit());
-                MessageBox.Show(saida, "Resultado do SikuliX");
+                //MessageBox.Show(saida, "Resultado do SikuliX");
+
+                File.WriteAllText(caminhoDados, string.Empty);
             }
         }
 

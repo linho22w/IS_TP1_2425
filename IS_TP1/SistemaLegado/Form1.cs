@@ -18,7 +18,7 @@ namespace sistema_legado
             InitializeComponent();
             ConfigurarTabela();
          
-            CarregarDadosDoBanco();
+            CarregarDadosDaBD();
 
             dtData.Value = new DateTime(2000, 1, 1);
             dtHora.Value = new DateTime(2000, 1, 1, 0, 0, 0);
@@ -31,20 +31,40 @@ namespace sistema_legado
 
         private bool ValidarCampos(string codigo, string tempo)
         {
-            if (string.IsNullOrWhiteSpace(codigo) || codigo.Length != 8)
-            {
-                MessageBox.Show("O código da peça deve ter exatamente 8 caracteres!");
-                return false;
-            }
+            string erroMensagem = "";
+
+            // Verificar se o código da peça é válido
             if (string.IsNullOrWhiteSpace(codigo))
             {
-                MessageBox.Show("Preencha o código da peça!");
-                return false;
+                erroMensagem = "O código da peça não pode estar vazio!";
+            }
+            else if (codigo.Length != 8)
+            {
+                erroMensagem = "O código da peça deve ter exatamente 8 caracteres!";
+            }
+            else
+            {
+                string prefixo = codigo.Substring(0, 2);
+                if (prefixo != "aa" && prefixo != "ab" && prefixo != "ba" && prefixo != "bb")
+                {
+                    erroMensagem = "Os dois primeiros caracteres do código devem ser: 'aa', 'ab', 'ba' ou 'bb'.";
+                }
             }
 
-            if (!int.TryParse(tempo, out _))
+            // Verificar se o tempo de produção é válido
+            if (string.IsNullOrWhiteSpace(tempo))
             {
-                MessageBox.Show("Tempo deve ser um número!");
+                erroMensagem = "O tempo de produção não pode estar vazio!";
+            }
+            else if (!int.TryParse(tempo, out int tempoInt) || tempoInt < 10 || tempoInt > 50)
+            {
+                erroMensagem = "O tempo de produção deve ser um número inteiro entre 10 e 50 segundos!";
+            }
+
+            // Se houver erro, exibe a mensagem e retorna false
+            if (!string.IsNullOrEmpty(erroMensagem))
+            {
+                MessageBox.Show(erroMensagem, "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -71,12 +91,12 @@ namespace sistema_legado
                         cmd.ExecuteNonQuery();
                     }
 
-                    CarregarDadosDoBanco(); // Atualiza a grade
-                    MessageBox.Show("Produto inserido com sucesso!");
+                    CarregarDadosDaBD(); // Atualiza a grade
+                    MessageBox.Show("Produto registado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Erro ao inserir produto: {ex.Message}");
+                    MessageBox.Show($"Erro ao salvar: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -86,7 +106,7 @@ namespace sistema_legado
             codigo.Clear();
             tempo.Clear();
         }
-        private void CarregarDadosDoBanco()
+        private void CarregarDadosDaBD()
         {
             tabelaProdutos.Rows.Clear(); // Limpa dados antigos
 
@@ -105,7 +125,7 @@ namespace sistema_legado
                 }
             }
         }
-        private void btnSalvar_Click(object sender, EventArgs e)
+        private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
@@ -113,17 +133,12 @@ namespace sistema_legado
                 string codigo = txtCodigo.Text.Trim();
                 string tempo = txtTempo.Text.Trim();
 
-                if (string.IsNullOrEmpty(codigo) || codigo.Length != 8)
+                // Validar campos antes de inserir
+                if (!ValidarCampos(codigo, tempo))
                 {
-                    MessageBox.Show("O código deve ter 8 caracteres!");
-                    return;
+                    return; // Se a validação falhar, sai da função
                 }
 
-                if (!int.TryParse(tempo, out int tempoValor))
-                {
-                    MessageBox.Show("Tempo deve ser um número!");
-                    return;
-                }
                 DateTime dataProducao = dtData.Value == DateTime.MinValue ? new DateTime(2000, 1, 1) : dtData.Value;
                 TimeSpan horaProducao = dtHora.Value == DateTime.MinValue ? new TimeSpan(0, 0, 0) : dtHora.Value.TimeOfDay;
                 // Chama o método de inserção

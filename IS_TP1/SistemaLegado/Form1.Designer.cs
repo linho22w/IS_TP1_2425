@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-
             gridProdutos = new DataGridView();
             groupBox1 = new GroupBox();
             label4 = new Label();
@@ -46,14 +45,14 @@
             // 
             // gridProdutos
             // 
-           // gridProdutos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            gridProdutos.Dock = System.Windows.Forms.DockStyle.Fill; // Ocupa todo o espaço restante
-            gridProdutos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill; // Colunas ajustáveis
+            gridProdutos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            gridProdutos.ColumnHeadersHeight = 34;
             gridProdutos.Dock = DockStyle.Bottom;
-            gridProdutos.Location = new Point(0, 219);
+            gridProdutos.Location = new Point(0, 274);
+            gridProdutos.Margin = new Padding(4);
             gridProdutos.Name = "gridProdutos";
             gridProdutos.RowHeadersWidth = 51;
-            gridProdutos.Size = new Size(937, 413);
+            gridProdutos.Size = new Size(1171, 516);
             gridProdutos.TabIndex = 0;
             // 
             // groupBox1
@@ -69,97 +68,109 @@
             groupBox1.Controls.Add(txtCodigo);
             groupBox1.Dock = DockStyle.Top;
             groupBox1.Location = new Point(0, 0);
+            groupBox1.Margin = new Padding(4);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(937, 213);
+            groupBox1.Padding = new Padding(4);
+            groupBox1.Size = new Size(1171, 266);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
-            groupBox1.Text = "Novo Produto";
+            groupBox1.Text = "Registar novo Produto";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(20, 165);
+            label4.Location = new Point(25, 206);
+            label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
-            label4.Size = new Size(125, 20);
+            label4.Size = new Size(150, 25);
             label4.TabIndex = 8;
             label4.Text = "Tempo (minutos):";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(20, 125);
+            label3.Location = new Point(25, 156);
+            label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new Size(104, 20);
+            label3.Size = new Size(127, 25);
             label3.TabIndex = 7;
             label3.Text = "Hora de Prod.:";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(20, 85);
+            label2.Location = new Point(25, 106);
+            label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(103, 20);
+            label2.Size = new Size(125, 25);
             label2.TabIndex = 6;
             label2.Text = "Data de Prod.:";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(20, 43);
+            label1.Location = new Point(25, 54);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(116, 20);
+            label1.Size = new Size(140, 25);
             label1.TabIndex = 5;
             label1.Text = "Código da Peça:";
             // 
             // btnSalvar
             // 
-            btnSalvar.Location = new Point(400, 160);
+            btnSalvar.Location = new Point(500, 200);
+            btnSalvar.Margin = new Padding(4);
             btnSalvar.Name = "btnSalvar";
-            btnSalvar.Size = new Size(100, 30);
+            btnSalvar.Size = new Size(125, 38);
             btnSalvar.TabIndex = 4;
-            btnSalvar.Text = "Salvar";
+            btnSalvar.Text = "Guardar";
             btnSalvar.UseVisualStyleBackColor = true;
-            btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
+            btnSalvar.Click += btnGuardar_Click;
             // 
             // txtTempo
             // 
-            txtTempo.Location = new Point(150, 160);
+            txtTempo.Location = new Point(188, 200);
+            txtTempo.Margin = new Padding(4);
             txtTempo.Name = "txtTempo";
-            txtTempo.Size = new Size(200, 27);
+            txtTempo.Size = new Size(249, 31);
             txtTempo.TabIndex = 3;
             // 
             // dtHora
             // 
             dtHora.Format = DateTimePickerFormat.Time;
-            dtHora.Location = new Point(150, 120);
+            dtHora.Location = new Point(188, 150);
+            dtHora.Margin = new Padding(4);
             dtHora.Name = "dtHora";
             dtHora.ShowUpDown = true;
-            dtHora.Size = new Size(200, 27);
+            dtHora.Size = new Size(249, 31);
             dtHora.TabIndex = 2;
             // 
             // dtData
             // 
             dtData.Format = DateTimePickerFormat.Short;
-            dtData.Location = new Point(150, 80);
+            dtData.Location = new Point(188, 100);
+            dtData.Margin = new Padding(4);
             dtData.Name = "dtData";
-            dtData.Size = new Size(200, 27);
+            dtData.Size = new Size(249, 31);
             dtData.TabIndex = 1;
             // 
             // txtCodigo
             // 
-            txtCodigo.Location = new Point(150, 40);
+            txtCodigo.Location = new Point(188, 50);
+            txtCodigo.Margin = new Padding(4);
             txtCodigo.Multiline = true;
             txtCodigo.Name = "txtCodigo";
-            txtCodigo.Size = new Size(200, 27);
+            txtCodigo.Size = new Size(249, 33);
             txtCodigo.TabIndex = 0;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(937, 632);
+            ClientSize = new Size(1171, 790);
             Controls.Add(groupBox1);
             Controls.Add(gridProdutos);
+            Margin = new Padding(4);
             Name = "Form1";
             Text = "Sistema Legado de Produção";
             ((System.ComponentModel.ISupportInitialize)gridProdutos).EndInit();
