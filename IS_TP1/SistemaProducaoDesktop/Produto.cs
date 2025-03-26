@@ -22,7 +22,8 @@ namespace SistemaProducaoDesktop
             string tipo = tiposProduto[random.Next(tiposProduto.Length)];
             string identificador = Guid.NewGuid().ToString("N").Substring(0, 6); // Gera um identificador único de 6 caracteres
             //No entanto poderia ser utilizado - random.Next(100000, 999999).ToString(); | Com poucas possibilidades de calhar o mesmo id.
-            //Como fala em caracteres podemos utilizar Guid que fica mais correto.
+            //Como fala em caracteres podemos utilizar Guid que fica mais correto,
+            //aceitando numeros e letras (nos restantes 6 digitos do codigo).
             string codigoPeca = tipo + identificador;
 
             DateTime dataProducao = DateTime.Now.Date;

@@ -9,7 +9,7 @@ namespace sistema_legado
     {
         private DataTable tabelaProdutos = new DataTable();
 
-        // String de conexão com o banco de dados (ajuste conforme necessário)
+        // String de conexão com a base de dados
         string connectionString = "Data Source=localhost\\MEIBI2025;Initial Catalog=Producao;Integrated Security=True;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
 
@@ -106,6 +106,7 @@ namespace sistema_legado
             codigo.Clear();
             tempo.Clear();
         }
+
         private void CarregarDadosDaBD()
         {
             tabelaProdutos.Rows.Clear(); // Limpa dados antigos

@@ -77,18 +77,33 @@ namespace ProducaoAPI.Controllers
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (SqlException ex) // Captura erros do SQL Server, durante o stored procedure
             {
-                Console.WriteLine($"Erro ao inserir produto: {ex.Message}");
-                return BadRequest(new { message = "Erro ao inserir produto no SQL Server." });
+                Console.WriteLine($"Erro SQL ao inserir produto: {ex.Message}");
+
+                return BadRequest(new
+                {
+                    message = "Erro ao inserir produto.",
+                    sqlError = ex.Message // Retorna a mensagem específica do SQL Server
+                });
+            }
+            catch (Exception ex) // Captura outros erros inesperados
+            {
+                Console.WriteLine($"Erro inesperado: {ex.Message}");
+
+                return StatusCode(500, new
+                {
+                    message = "Erro interno no servidor.",
+                    error = ex.Message
+                });
             }
         }
 
 
-        // PUT api/<Values>/5
+        // PUT api/values/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Produto produto)
-        {  
+        {
             try
             {
                 Console.WriteLine($"PUT Request - Atualizar Produto ID: {id}");
@@ -105,24 +120,19 @@ namespace ProducaoAPI.Controllers
                         cmd.Parameters.AddWithValue("@Tempo_Producao", produto.Tempo_Producao);
 
                         con.Open();
-                        int rowsAffected = cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery(); // Mesmo que falhe, a exceção será capturada
                         con.Close();
 
-                        if (rowsAffected > 0)
-                        {
-                            return Ok(new { message = "Produto atualizado com sucesso!" });
-                        }
-                        else
-                        {
-                            return NotFound(new { message = "Produto não encontrado." });
-                        }
+                        return Ok(new { message = "Produto atualizado com sucesso!" });
                     }
                 }
             }
             catch (SqlException ex)
             {
                 Console.WriteLine($"Erro ao atualizar produto: {ex.Message}");
-                return BadRequest(new { message = "Erro ao atualizar produto no SQL Server." });
+
+                // Retorna a mensagem de erro SQL para o cliente
+                return BadRequest(new { message = "Erro ao atualizar produto.", sqlError = ex.Message });
             }
         }
 
@@ -131,7 +141,7 @@ namespace ProducaoAPI.Controllers
         {
             try
             {
-                Console.WriteLine($"DELETE Request for Produto ID: {id}");
+                Console.WriteLine($"DELETE Request - Produto ID: {id}");
 
                 using (SqlConnection con = new SqlConnection(sqlConnectionString))
                 {
@@ -141,24 +151,28 @@ namespace ProducaoAPI.Controllers
                         cmd.Parameters.AddWithValue("@ID_Produto", id);
 
                         con.Open();
-                        int rowsAffected = cmd.ExecuteNonQuery();
-                        con.Close();
-
-                        if (rowsAffected > 0)
+                        try
                         {
-                            return NoContent(); 
+                            cmd.ExecuteNonQuery();
                         }
-                        else
+                        catch (SqlException ex)
                         {
-                            return NotFound(new { message = "Produto não encontrado." });
+                            Console.WriteLine($"Erro SQL ao eliminar produto: {ex.Message}");
+                            return BadRequest(new { message = "Erro ao eliminar produto.", sqlError = ex.Message });
+                        }
+                        finally
+                        {
+                            con.Close();
                         }
                     }
                 }
+
+                return Ok(new { message = "Produto eliminado com sucesso!" });
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao eliminar produto: {ex.Message}");
-                return BadRequest(new { message = "Erro ao eliminar produto." });
+                Console.WriteLine($"Erro inesperado: {ex.Message}");
+                return StatusCode(500, new { message = "Erro interno no servidor.", error = ex.Message });
             }
         }
 
