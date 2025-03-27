@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaLegado", "SistemaLeg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaProducaoDesktop", "SistemaProducaoDesktop\SistemaProducaoDesktop.csproj", "{945E262F-80D3-7222-DAD1-CACFCAF165D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gerador_de_dados", "gerador_de_dados\gerador_de_dados.csproj", "{A0EB48B7-56EB-4BD0-903A-35374BDEC7D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{945E262F-80D3-7222-DAD1-CACFCAF165D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{945E262F-80D3-7222-DAD1-CACFCAF165D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{945E262F-80D3-7222-DAD1-CACFCAF165D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0EB48B7-56EB-4BD0-903A-35374BDEC7D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0EB48B7-56EB-4BD0-903A-35374BDEC7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0EB48B7-56EB-4BD0-903A-35374BDEC7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0EB48B7-56EB-4BD0-903A-35374BDEC7D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
