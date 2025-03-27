@@ -25,16 +25,16 @@ namespace SistemaProducaoDesktop
             dgvProdutos.DataSource = null;
             dgvProdutos.DataSource = produtos;
 
-            //GuardarProdutoEmCSV(novoProduto);
+            GuardarProdutoEmCSV(novoProduto);
         }
 
-        //private void GuardarProdutoEmCSV(Produto produto)
-        //{
-        //    using (StreamWriter sw = new StreamWriter(caminhoFicheiro, true))
-        //    {
-        //        sw.WriteLine($"{produto.Codigo_Peca},{produto.Data_Producao:dd-MM-yyyy},{produto.Hora_Producao:hh\\:mm\\:ss},{produto.Tempo_Producao},{produto.Codigo_Resultado}");
-        //    }
-        //}
+        private void GuardarProdutoEmCSV(Produto produto)
+        {
+            using (StreamWriter sw = new StreamWriter(caminhoFicheiro, true))
+            {
+               sw.WriteLine($"{produto.Codigo_Peca},{produto.Data_Producao:dd-MM-yyyy},{produto.Hora_Producao:hh\\:mm\\:ss},{produto.Tempo_Producao},{produto.Codigo_Resultado}");
+           }
+        }
 
         private async void btnExecutarSikuli_Click(object sender, EventArgs e)
         {
