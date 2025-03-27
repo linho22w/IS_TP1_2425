@@ -12,7 +12,8 @@ namespace SistemaProducaoDesktop
         public DateTime Data_Producao { get; set; }
         public TimeSpan Hora_Producao { get; set; } 
         public int Tempo_Producao { get; set; }
-        public string Codigo_Resultado { get; set; }
+
+        //public string Codigo_Resultado { get; set; }
 
         private static readonly Random random = new Random();
 
@@ -37,7 +38,7 @@ namespace SistemaProducaoDesktop
             //
 
             // Distribuição realista dos códigos de resultado
-            string codigoResultado = GerarCodigoResultado();
+            //string codigoResultado = GerarCodigoResultado();
 
             return new Produto
             {
@@ -45,27 +46,27 @@ namespace SistemaProducaoDesktop
                 Data_Producao = dataProducao,
                 Hora_Producao = horaProducao,
                 Tempo_Producao = tempoProducao,
-                Codigo_Resultado = codigoResultado
+                //Codigo_Resultado = codigoResultado
             };
         }
 
-        // Método para gerar código de resultado com distribuição realista
-        private static string GerarCodigoResultado()
-        {
-            int chance = random.Next(100); // Número entre 0 e 99
+        //// Método para gerar código de resultado com distribuição realista
+        //private static string GerarCodigoResultado()
+        //{
+        //    int chance = random.Next(100); // Número entre 0 e 99
 
-            if (chance < 70)
-                return "01"; // 70% de chance de ser "01 - Ok"
-            else if (chance < 75)
-                return "02"; // 5% para "02 - Falha na inspeção visual"
-            else if (chance < 80)
-                return "03"; // 5% para "03 - Falha na inspeção de resistência):"
-            else if (chance < 85)
-                return "04"; // 5% para "04 - Falha na inspeção de dimensões):"
-            else if (chance < 90)
-                return "05"; // 5% para "05 - Falha na inspeção de estanqueidade"
-            else
-                return "06"; // 5% para "06 - Desconhecido"
-        }
+        //    if (chance < 70)
+        //        return "01"; // 70% de chance de ser "01 - Ok"
+        //    else if (chance < 75)
+        //        return "02"; // 5% para "02 - Falha na inspeção visual"
+        //    else if (chance < 80)
+        //        return "03"; // 5% para "03 - Falha na inspeção de resistência):"
+        //    else if (chance < 85)
+        //        return "04"; // 5% para "04 - Falha na inspeção de dimensões):"
+        //    else if (chance < 90)
+        //        return "05"; // 5% para "05 - Falha na inspeção de estanqueidade"
+        //    else
+        //        return "06"; // 5% para "06 - Desconhecido"
+        //}
     }
 }
