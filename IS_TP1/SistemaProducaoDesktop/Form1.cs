@@ -10,7 +10,7 @@ namespace SistemaProducaoDesktop
     public partial class Form1 : Form
     {
         private List<Produto> produtos = new List<Produto>();
-        private string caminhoFicheiro = "C:\\Users\\pauli\\Desktop\\IS\\TP1\\dados.txt";
+        private string caminhoFicheiro = "C:\\Users\\anton\\Desktop\\integracao de sistemas\\dados.txt";
 
         public Form1()
         {
@@ -37,10 +37,10 @@ namespace SistemaProducaoDesktop
         }
 
         private async void btnExecutarSikuli_Click(object sender, EventArgs e)
-        {
-            string caminhoSikuliX = @"C:\Users\pauli\Desktop\sikulixide-2.0.5.jar";
-            string caminhoScript = @"C:\Users\pauli\Desktop\IS\TP1\sikuli_IS.sikuli\sikuli_IS.py";
-            string caminhoDados = @"C:\Users\pauli\Desktop\IS\TP1\dados.txt";
+        { 
+            string caminhoSikuliX = @"C:\Users\anton\Downloads\sikulixide-2.0.5.jar";
+            string caminhoScript = @"C:\Users\anton\Downloads\sikuli_IS.sikuli\sikuli_IS.py";
+            string caminhoDados = @"C:\Users\anton\Desktop\integracao de sistemas\dados.txt";
 
             ProcessStartInfo psi = new ProcessStartInfo
             {

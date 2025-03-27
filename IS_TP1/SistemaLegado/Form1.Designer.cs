@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-
             gridProdutos = new DataGridView();
             groupBox1 = new GroupBox();
+            dgvProdutos = new DataGridView();
+            btnExecutarSikuli = new Button();
+            btnGerar = new Button();
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
@@ -42,13 +44,13 @@
             txtCodigo = new TextBox();
             ((System.ComponentModel.ISupportInitialize)gridProdutos).BeginInit();
             groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvProdutos).BeginInit();
             SuspendLayout();
             // 
             // gridProdutos
             // 
-           // gridProdutos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            gridProdutos.Dock = System.Windows.Forms.DockStyle.Fill; // Ocupa todo o espaço restante
-            gridProdutos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill; // Colunas ajustáveis
+            gridProdutos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            gridProdutos.ColumnHeadersHeight = 29;
             gridProdutos.Dock = DockStyle.Bottom;
             gridProdutos.Location = new Point(0, 219);
             gridProdutos.Name = "gridProdutos";
@@ -58,6 +60,9 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(dgvProdutos);
+            groupBox1.Controls.Add(btnExecutarSikuli);
+            groupBox1.Controls.Add(btnGerar);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label2);
@@ -74,6 +79,40 @@
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Novo Produto";
+            // 
+            // dgvProdutos
+            // 
+            dgvProdutos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvProdutos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvProdutos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProdutos.Location = new Point(475, 71);
+            dgvProdutos.Margin = new Padding(3, 4, 3, 4);
+            dgvProdutos.Name = "dgvProdutos";
+            dgvProdutos.RowHeadersWidth = 62;
+            dgvProdutos.Size = new Size(450, 135);
+            dgvProdutos.TabIndex = 2;
+            // 
+            // btnExecutarSikuli
+            // 
+            btnExecutarSikuli.Location = new Point(782, 23);
+            btnExecutarSikuli.Margin = new Padding(3, 4, 3, 4);
+            btnExecutarSikuli.Name = "btnExecutarSikuli";
+            btnExecutarSikuli.Size = new Size(143, 40);
+            btnExecutarSikuli.TabIndex = 3;
+            btnExecutarSikuli.Text = "Automatizar";
+            btnExecutarSikuli.UseVisualStyleBackColor = true;
+            btnExecutarSikuli.Click += btnExecutarSikuli_Click;
+            // 
+            // btnGerar
+            // 
+            btnGerar.Location = new Point(475, 23);
+            btnGerar.Margin = new Padding(3, 4, 3, 4);
+            btnGerar.Name = "btnGerar";
+            btnGerar.Size = new Size(143, 40);
+            btnGerar.TabIndex = 2;
+            btnGerar.Text = "Gerar Produto";
+            btnGerar.UseVisualStyleBackColor = true;
+            btnGerar.Click += btnGerar_Click;
             // 
             // label4
             // 
@@ -113,13 +152,13 @@
             // 
             // btnSalvar
             // 
-            btnSalvar.Location = new Point(400, 160);
+            btnSalvar.Location = new Point(356, 160);
             btnSalvar.Name = "btnSalvar";
             btnSalvar.Size = new Size(100, 30);
             btnSalvar.TabIndex = 4;
             btnSalvar.Text = "Salvar";
             btnSalvar.UseVisualStyleBackColor = true;
-            btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
+            btnSalvar.Click += btnSalvar_Click;
             // 
             // txtTempo
             // 
@@ -152,6 +191,7 @@
             txtCodigo.Name = "txtCodigo";
             txtCodigo.Size = new Size(200, 27);
             txtCodigo.TabIndex = 0;
+            txtCodigo.Text = "2f2";
             // 
             // Form1
             // 
@@ -165,6 +205,7 @@
             ((System.ComponentModel.ISupportInitialize)gridProdutos).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvProdutos).EndInit();
             ResumeLayout(false);
         }
 
@@ -181,7 +222,8 @@
         private DateTimePicker dtHora;
         private DateTimePicker dtData;
         private TextBox txtCodigo;
-
-
+        private Button btnGerar;
+        private Button btnExecutarSikuli;
+        private DataGridView dgvProdutos;
     }
 }

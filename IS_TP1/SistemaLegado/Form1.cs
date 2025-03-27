@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace sistema_legado
 {
@@ -11,13 +12,12 @@ namespace sistema_legado
 
         // String de conexão com o banco de dados (ajuste conforme necessário)
         string connectionString = "Data Source=localhost\\MEIBI2025;Initial Catalog=Producao;Integrated Security=True;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-
+        private List<Produto> produtos = new List<Produto>();
+        private string caminhoFicheiro = "C:\\Users\\anton\\Desktop\\integracao de sistemas\\dados.txt";
         public Form1()
         {
             InitializeComponent();
             ConfigurarTabela();
-         
             CarregarDadosDoBanco();
 
             dtData.Value = new DateTime(2000, 1, 1);
@@ -135,6 +135,48 @@ namespace sistema_legado
                 MessageBox.Show($"Erro ao salvar: {ex.Message}");
             }
         }
+        private void btnGerar_Click(object sender, EventArgs e)
+        {
+            Produto novoProduto = Produto.GerarProdutoAleatorio();
+            produtos.Add(novoProduto);
+
+            dgvProdutos.DataSource = null;
+            dgvProdutos.DataSource = produtos;
+
+            SalvarProdutoEmCSV(novoProduto);
+        }
+
+        private void SalvarProdutoEmCSV(Produto produto)
+        {
+            using (StreamWriter sw = new StreamWriter(caminhoFicheiro, true))
+            {
+                sw.WriteLine($"{produto.Codigo_Peca},{produto.Data_Producao:dd-MM-yyyy},{produto.Hora_Producao:hh\\:mm\\:ss},{produto.Tempo_Producao},{produto.Codigo_Resultado}");
+            }
+        }
+
+        private async void btnExecutarSikuli_Click(object sender, EventArgs e)
+        {
+            string caminhoSikuliX = @"C:\Users\anton\Downloads\sikulixide-2.0.5.jar";
+            string caminhoScript = @"C:\Users\anton\Downloads\sikuli_IS.sikuli\sikuli_IS.py";
+            string caminhoDados = @"C:\Users\anton\Desktop\integracao de sistemas\dados.txt";
+
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "java",
+                Arguments = $"-jar \"{caminhoSikuliX}\" -r \"{caminhoScript}\" \"{caminhoDados}\"", // Aspas escapadas
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process processo = Process.Start(psi))
+            {
+                string saida = await processo.StandardOutput.ReadToEndAsync();
+                await Task.Run(() => processo.WaitForExit());
+                MessageBox.Show(saida, "Resultado do SikuliX");
+            }
+        }
+
     }
 
 }
