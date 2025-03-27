@@ -9,15 +9,11 @@ namespace ProducaoAPI.Models
             public int ID_Teste { get; set; }
 
             [Required]
-            [ForeignKey("Produto")]
-            public int ID_Produto { get; set; }
-
-            [Required]
             [StringLength(2)]
+            [RegularExpression("0[1-6]")] // Valida códigos 01-06
             public string Codigo_Resultado { get; set; }
 
-            [Required]
-            public DateTime Data_Teste { get; set; }
-      
+            public DateTime? DataTeste { get; set; } = DateTime.Now;
+
     }
 }
