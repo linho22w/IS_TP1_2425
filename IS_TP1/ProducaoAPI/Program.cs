@@ -7,24 +7,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-///
-// Configuração do CORS (para desenvolvimento)
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
-
-// Configuração da conexão com o banco
-builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-///
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
