@@ -17,7 +17,7 @@ namespace sistema_legado
         {
             InitializeComponent();
             ConfigurarTabela();
-         
+
             CarregarDadosDaBD();
 
             dtData.Value = new DateTime(2000, 1, 1);
