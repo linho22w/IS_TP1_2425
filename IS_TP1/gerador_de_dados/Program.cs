@@ -7,6 +7,7 @@ namespace gerador_de_dados
     {
         static void Main(string[] args)
         {
+
             while (true)
             {
                 Produto produto = Produto.GerarProdutoAleatorio();
@@ -17,9 +18,9 @@ namespace gerador_de_dados
                 Console.WriteLine(resultado);
 
                 // Aguarda 10 segundos antes de gerar o próximo produto
-                Thread.Sleep(10000);  // 10000 milissegundos = 10 segundos
-
+                Thread.Sleep(10000);
             }
         }
     }
 }
+

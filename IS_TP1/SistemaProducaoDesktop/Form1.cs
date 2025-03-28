@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace SistemaProducaoDesktop
 {
@@ -27,16 +28,16 @@ namespace SistemaProducaoDesktop
 
             while (gerando)
             {
-                // Cria e adiciona o produto
                 Produto novo = Produto.GerarProdutoAleatorio();
                 produtos.Insert(0, novo);
 
-                // Atualiza o DataGridView
-                dgvProdutos.DataSource = null;
-                dgvProdutos.DataSource = produtos;
+                // Atualiza as TextBoxes
+                txtCodigo.Text = novo.Codigo_Peca;
+                txtData.Text = novo.Data_Producao.ToShortDateString();
+                txtHora.Text = novo.Hora_Producao.ToString(@"hh\:mm\:ss");
+                txtTempo.Text = novo.Tempo_Producao.ToString();
 
-                // Espera tempo aleatório
-                await Task.Delay(novo.Tempo_Producao*1000);
+                await Task.Delay(novo.Tempo_Producao * 1000);
             }
 
             btnGerar.Enabled = true;
