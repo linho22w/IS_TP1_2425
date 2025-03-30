@@ -10,6 +10,7 @@ namespace ProducaoAPI.Controllers
     [ApiController]
     public class TestesController : ControllerBase
     {
+        //Conexao com a base de dados
         string sqlConnectionString = "Data Source=localhost\\MEIBI2025;Initial Catalog=Producao;Integrated Security=True;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         // GET: api/Testes/
@@ -64,6 +65,7 @@ namespace ProducaoAPI.Controllers
             }
         }
 
+        //Nao há posts de testes uma vez que eles vao ser inseridos diretamente apos cada inserçao de produto !!!
         //// POST: api/Testes
         //[HttpPost]
         //public ActionResult Post([FromBody] Teste teste)
@@ -140,10 +142,9 @@ namespace ProducaoAPI.Controllers
                         int rowsAffected = cmd.ExecuteNonQuery();
                         con.Close();
 
-                        if (rowsAffected > 0)
-                            return Ok(new { message = "Teste atualizado com sucesso!" });
-                        else
-                            return NotFound(new { message = "Teste não encontrado." });
+                        
+                        return Ok(new { message = "Teste atualizado com sucesso!" });
+                                               
                     }
                 }
             }
@@ -192,6 +193,7 @@ namespace ProducaoAPI.Controllers
             }
         }
 
+        //Funcao para dizer a que se deve o codigo_resultado (Protocolo do trabalho)
         private string ObterDescricaoResultado(string codigoResultado)
         {
             return codigoResultado switch

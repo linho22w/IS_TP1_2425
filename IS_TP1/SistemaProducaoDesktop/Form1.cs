@@ -3,62 +3,56 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Drawing;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace SistemaProducaoDesktop
 {
     public partial class Form1 : Form
     {
         private List<Produto> produtos = new List<Produto>();
-        private string caminhoFicheiro = "C:\\Users\\pauli\\Desktop\\IS\\TP1\\dados.txt";
+
 
         public Form1()
         {
             InitializeComponent();
+            // Mover a janela ao inicializar
+            this.StartPosition = FormStartPosition.Manual; 
+            this.Location = new Point(0, 200); 
+
         }
 
-        private void btnGerar_Click(object sender, EventArgs e)
+        private Random random = new Random();
+        private bool gerando = false;
+
+        private async void btnGerar_Click(object sender, EventArgs e)
         {
-            Produto novoProduto = Produto.GerarProdutoAleatorio();
-            produtos.Insert(0,novoProduto);
+            btnGerar.Enabled = false;
+            gerando = true;
 
-            dgvProdutos.DataSource = null;
-            dgvProdutos.DataSource = produtos;
-
-            GuardarProdutoEmCSV(novoProduto);
-        }
-
-        private void GuardarProdutoEmCSV(Produto produto)
-        {
-            using (StreamWriter sw = new StreamWriter(caminhoFicheiro, true))
+            while (gerando)
             {
-               sw.WriteLine($"{produto.Codigo_Peca},{produto.Data_Producao:dd-MM-yyyy},{produto.Hora_Producao:hh\\:mm\\:ss},{produto.Tempo_Producao},{produto.Codigo_Resultado}");
-           }
-        }
+                // Cria e adiciona o produto
+                Produto novo = Produto.GerarProdutoAleatorio();
+                produtos.Insert(0, novo);
 
-        private async void btnExecutarSikuli_Click(object sender, EventArgs e)
-        {
-            string caminhoSikuliX = @"C:\Users\pauli\Desktop\sikulixide-2.0.5.jar";
-            string caminhoScript = @"C:\Users\pauli\Desktop\IS\TP1\IS_TP1-Sikulix\TP1_sikulix.py";
-            string caminhoDados = @"C:\Users\pauli\Desktop\IS\TP1\dados.txt";
+                // Atualiza as TextBoxes
+                txtCodigo.Text = novo.Codigo_Peca;
+                txtData.Text = novo.Data_Producao.ToShortDateString();
+                txtHora.Text = novo.Hora_Producao.ToString(@"hh\:mm\:ss");
+                txtTempo.Text = novo.Tempo_Producao.ToString();
 
-            ProcessStartInfo psi = new ProcessStartInfo
-            {
-                FileName = "java",
-                Arguments = $"-jar \"{caminhoSikuliX}\" -r \"{caminhoScript}\" \"{caminhoDados}\"", // Aspas escapadas
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-
-            using (Process processo = Process.Start(psi))
-            {
-                string saida = await processo.StandardOutput.ReadToEndAsync();
-                await Task.Run(() => processo.WaitForExit());
-                //MessageBox.Show(saida, "Resultado do SikuliX");
-
-                File.WriteAllText(caminhoDados, string.Empty);
+                await Task.Delay(15 * 1000); //15 segundos entre cada produto gerado
             }
+
+            btnGerar.Enabled = true;
+        }
+
+        private void btnParar_Click(object sender, EventArgs e)
+        {
+            gerando = false;
+            btnGerar.Enabled = true;
         }
 
     }

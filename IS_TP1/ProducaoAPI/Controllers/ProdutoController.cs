@@ -2,6 +2,8 @@
 using Microsoft.Data.SqlClient;
 using static System.Reflection.Metadata.BlobBuilder;
 using ProducaoAPI.Models;
+using System.Text.Json;
+using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,58 +13,69 @@ namespace ProducaoAPI.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
+        //Tambem poderia ser feita, acedendo diretamente às tools e fazer a comunicação com a base de dados como o Professor ensinou
         string sqlConnectionString = "Data Source=localhost\\MEIBI2025;Initial Catalog=Producao;Integrated Security=True;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        //// GET: api/<Values>
-        //[HttpGet]
-        //public ActionResult Get()
-        //{
-        //    try
-        //    {
-        //        Console.Write("GET Request");
-        //        List<Produto> produtos = new List<Produto>();
-        //        using (SqlConnection con = new SqlConnection(sqlConnectionString))
-        //        {
-        //            using (SqlCommand cmd = new SqlCommand("sp_GetProdutos", con))
-        //            {
-        //                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-        //                con.Open();
-        //                SqlDataReader reader = cmd.ExecuteReader();
-        //                while (reader.Read())
-        //                {
-        //                    Produto item = new Produto();
-        //                    item.ID_Produto = Convert.ToInt32(reader["ID_Produto"]);
-        //                    item.Codigo_Peca = Convert.ToString(reader["Codigo_Peca"]);
-        //                    item.Data_Producao = Convert.ToDateTime(reader["Data_producao"]);
-        //                    item.Hora_Producao = TimeSpan.Parse(reader["Hora_Producao"].ToString());
-        //                    item.Tempo_Producao = Convert.ToInt32(reader["Tempo_Producao"]);
-        //                    produtos.Add(item);
-        //                }
-        //                con.Close();
-
-        //                return Ok(produtos);
-        //            }
-        //        }
-        //    }
-        //    catch (SqlException ex)
-        //    {
-        //        Console.WriteLine(ex.ToString());
-        //        return BadRequest();
-        //    }
-
-        //}
-        // POST api/<Values>
-        [HttpPost]
-        public ActionResult Post([FromBody] Produto produto)
+        // GET: api/<Values>
+        [HttpGet]
+        public ActionResult Get()
         {
             try
             {
-                Console.WriteLine("POST Request - Inserir Produto");
+                Console.Write("GET Request -  Visualizar todos os produtos\n");
+                List<Produto> produtos = new List<Produto>();
+                using (SqlConnection con = new SqlConnection(sqlConnectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_GetProdutos", con))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        con.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            Produto item = new Produto();
+                            item.ID_Produto = Convert.ToInt32(reader["ID_Produto"]);
+                            item.Codigo_Peca = Convert.ToString(reader["Codigo_Peca"]);
+                            item.Data_Producao = Convert.ToDateTime(reader["Data_producao"]);
+                            item.Hora_Producao = TimeSpan.Parse(reader["Hora_Producao"].ToString());
+                            item.Tempo_Producao = Convert.ToInt32(reader["Tempo_Producao"]);
+                            produtos.Add(item);
+                        }
+                        con.Close();
+
+                        return Ok(produtos);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return BadRequest();
+            }
+
+        }
+
+
+        // POST api/<Values>
+        [HttpPost]
+        [HttpPost]
+        public ActionResult Post([FromBody] JsonElement body)
+        {
+            try
+            {
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+                if (!body.TryGetProperty("Produto", out var produtoElement))
+                {
+                    return BadRequest(new { message = "Objeto 'Produto' é obrigatório" });
+                }
+
+                var produto = produtoElement.Deserialize<Produto>(options);
 
                 using (SqlConnection con = new SqlConnection(sqlConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand("sp_InserirProduto", con))
                     {
-                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@Codigo_Peca", produto.Codigo_Peca);
                         cmd.Parameters.AddWithValue("@Data_Producao", produto.Data_Producao);
@@ -71,31 +84,21 @@ namespace ProducaoAPI.Controllers
 
                         con.Open();
                         cmd.ExecuteNonQuery();
-                        con.Close();
 
-                        return Created("", new { message = "Produto inserido com sucesso! Teste e Custos gerados automaticamente." });
+                        Console.WriteLine($"Dados inseridos: {produto.Codigo_Peca}, {produto.Data_Producao:d}, {produto.Hora_Producao}, {produto.Tempo_Producao}");
+                        return Ok(new { message = "Produto inserido com sucesso!" });
                     }
                 }
             }
-            catch (SqlException ex) // Captura erros do SQL Server, durante o stored procedure
+            catch (SqlException ex) when (ex.Number == 50000) 
             {
-                Console.WriteLine($"Erro SQL ao inserir produto: {ex.Message}");
-
-                return BadRequest(new
-                {
-                    message = "Erro ao inserir produto.",
-                    sqlError = ex.Message // Retorna a mensagem específica do SQL Server
-                });
+                Console.WriteLine($"Falha ao inserir Produto: {ex.Message}");
+                return Conflict(new { message = ex.Message });
             }
-            catch (Exception ex) // Captura outros erros inesperados
+            catch (Exception ex)
             {
-                Console.WriteLine($"Erro inesperado: {ex.Message}");
-
-                return StatusCode(500, new
-                {
-                    message = "Erro interno no servidor.",
-                    error = ex.Message
-                });
+                Console.WriteLine($"Erro grave: {ex.Message}");
+                return StatusCode(500, new { message = "Erro interno" });
             }
         }
 

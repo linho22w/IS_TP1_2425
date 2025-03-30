@@ -2,153 +2,180 @@ using System;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using System.Windows.Forms;
+using System.Text;
+using Newtonsoft.Json;
+using System.Globalization;
 
 namespace sistema_legado
 {
     public partial class Form1 : Form
     {
-        private DataTable tabelaProdutos = new DataTable();
-
-        // String de conexão com a base de dados
-        string connectionString = "Data Source=localhost\\MEIBI2025;Initial Catalog=Producao;Integrated Security=True;Connect Timeout = 30; Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
+        private HttpClient client = new HttpClient();
+        private string apiBaseUrl = "http://localhost:5077/api/Produto";
 
         public Form1()
         {
             InitializeComponent();
-            ConfigurarTabela();
-         
-            CarregarDadosDaBD();
-
-            dtData.Value = new DateTime(2000, 1, 1);
-            dtHora.Value = new DateTime(2000, 1, 1, 0, 0, 0);
+            ConfigurarHttpClient();
         }
 
-        private void ConfigurarTabela()
+        private void ConfigurarHttpClient()
         {
-            gridProdutos.DataSource = tabelaProdutos;
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        private bool ValidarCampos(string codigo, string tempo)
+        private async void AdicionarProduto(string codigo, string data, string hora, string tempo)
+        {
+            try
+            {
+                // Validações básicas
+                if (string.IsNullOrWhiteSpace(codigo))
+                    throw new ArgumentException("Código da peça é obrigatório");
+
+                if (!int.TryParse(tempo, out int tempoProducao) || tempoProducao < 10 || tempoProducao > 50)
+                    throw new ArgumentException("Tempo de produção deve ser entre 10 e 50");
+
+                // Formatação da data (DD/MM/AAAA -> AAAA-MM-DD)
+                DateTime dataProducao;
+                if (!DateTime.TryParseExact(data, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dataProducao))
+                    throw new ArgumentException("Formato de data inválido. Use DD/MM/AAAA");
+
+                // Formatação da hora (garante HH:MM:SS)
+                TimeSpan horaProducao;
+                if (!TimeSpan.TryParseExact(hora, "hh\\:mm\\:ss", CultureInfo.InvariantCulture, out horaProducao))
+                {
+                    if (!TimeSpan.TryParseExact(hora, "hh\\:mm", CultureInfo.InvariantCulture, out horaProducao))
+                        throw new ArgumentException("Formato de hora inválido. Use HH:MM ou HH:MM:SS");
+                }
+
+                // Objeto no formato exato que a API espera
+                var payload = new
+                {
+                    Produto = new
+                    {
+                        Codigo_Peca = codigo.Trim(),
+                        Data_Producao = dataProducao.ToString("yyyy-MM-dd"),
+                        Hora_Producao = horaProducao.ToString("hh\\:mm\\:ss"),
+                        Tempo_Producao = tempoProducao
+                    }
+                };
+
+                var json = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync(apiBaseUrl, content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    var errorObj = JsonConvert.DeserializeObject<dynamic>(errorContent);
+                    throw new HttpRequestException(errorObj?.message?.ToString() ?? "Erro na API");
+                }
+
+                MessageBox.Show("Produto registado com sucesso!", "Sucesso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                LimparCampos();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message, "Erro de Validação",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show(ex.Message, "Erro na API",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro inesperado: {ex.Message}", "Erro",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool ValidarCampos(string codigo, string data, string hora, string tempo)
         {
             string erroMensagem = "";
 
-            // Verificar se o código da peça é válido
+            // Validação do código
             if (string.IsNullOrWhiteSpace(codigo))
-            {
-                erroMensagem = "O código da peça não pode estar vazio!";
-            }
+                erroMensagem += "Código da peça obrigatório!\n";
             else if (codigo.Length != 8)
+                erroMensagem += "Código deve ter 8 caracteres!\n";
+            else if (!codigo.StartsWith("aa") && !codigo.StartsWith("ab") &&
+                     !codigo.StartsWith("ba") && !codigo.StartsWith("bb"))
+                erroMensagem += "Código deve começar com aa, ab, ba ou bb!\n";
+
+            // Validação da data
+            if (string.IsNullOrWhiteSpace(data))
             {
-                erroMensagem = "O código da peça deve ter exatamente 8 caracteres!";
+                erroMensagem += "Data não pode estar vazia!\n";
             }
             else
             {
-                string prefixo = codigo.Substring(0, 2);
-                if (prefixo != "aa" && prefixo != "ab" && prefixo != "ba" && prefixo != "bb")
+                data = data.Replace('/', '-');
+
+                if (data.Length != 10)
                 {
-                    erroMensagem = "Os dois primeiros caracteres do código devem ser: 'aa', 'ab', 'ba' ou 'bb'.";
+                    erroMensagem += "Data deve ter 10 caracteres (ex: 20-03-2025)!\n";
+                }
+                else if (!DateTime.TryParseExact(
+                    data,
+                    "dd-MM-yyyy",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.None,
+                    out _))
+                {
+                    erroMensagem += $"Data inválida: {data} (use dd-MM-yyyy)!\n";
                 }
             }
 
-            // Verificar se o tempo de produção é válido
-            if (string.IsNullOrWhiteSpace(tempo))
-            {
-                erroMensagem = "O tempo de produção não pode estar vazio!";
-            }
-            else if (!int.TryParse(tempo, out int tempoInt) || tempoInt < 10 || tempoInt > 50)
-            {
-                erroMensagem = "O tempo de produção deve ser um número inteiro entre 10 e 50 segundos!";
-            }
+            // Validação da hora
+            if (!DateTime.TryParseExact(hora, "HH:mm:ss", null,
+                System.Globalization.DateTimeStyles.None, out _))
+                erroMensagem += "Formato de hora inválido (HH:mm:ss)!\n";
 
-            // Se houver erro, exibe a mensagem e retorna false
+            // Validação do tempo
+            if (!int.TryParse(tempo, out int tempoInt) || tempoInt < 10 || tempoInt > 50)
+                erroMensagem += "Tempo inválido (10-50 segundos)!\n";
+
             if (!string.IsNullOrEmpty(erroMensagem))
             {
-                MessageBox.Show(erroMensagem, "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(erroMensagem, "Erros de Validação",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
-
             return true;
         }
 
-        private void AdicionarProduto(string codigo, DateTime data, TimeSpan hora, string tempo)
+        private void LimparCampos()
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand("sp_InserirProduto", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-
-                        // Garante que o código tenha 8 caracteres
-                        cmd.Parameters.AddWithValue("@Codigo_Peca", codigo.PadRight(8).Substring(0, 8));
-                        cmd.Parameters.AddWithValue("@Data_Producao", data.Date);
-                        cmd.Parameters.AddWithValue("@Hora_Producao", hora);
-                        cmd.Parameters.AddWithValue("@Tempo_Producao", int.Parse(tempo));
-
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    CarregarDadosDaBD(); // Atualiza a grade
-                    MessageBox.Show("Produto registado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro ao salvar: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            txtCodigo.Clear();
+            txtData.Clear();
+            txtHora.Clear();
+            txtTempo.Clear();
+            txtCodigo.Focus();
         }
 
-        private void LimparCampos(TextBox codigo, TextBox tempo)
-        {
-            codigo.Clear();
-            tempo.Clear();
-        }
-
-        private void CarregarDadosDaBD()
-        {
-            tabelaProdutos.Rows.Clear(); // Limpa dados antigos
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    string query = "SELECT * FROM Produto";
-                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                    adapter.Fill(tabelaProdutos);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Erro ao carregar dados: {ex.Message}");
-                }
-            }
-        }
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
-                // Validação dos campos
                 string codigo = txtCodigo.Text.Trim();
+                string data = txtData.Text.Trim();
+                string hora = txtHora.Text.Trim();
                 string tempo = txtTempo.Text.Trim();
 
-                // Validar campos antes de inserir
-                if (!ValidarCampos(codigo, tempo))
-                {
-                    return; // Se a validação falhar, sai da função
-                }
-
-                DateTime dataProducao = dtData.Value == DateTime.MinValue ? new DateTime(2000, 1, 1) : dtData.Value;
-                TimeSpan horaProducao = dtHora.Value == DateTime.MinValue ? new TimeSpan(0, 0, 0) : dtHora.Value.TimeOfDay;
-                // Chama o método de inserção
-                AdicionarProduto(codigo, dtData.Value, dtHora.Value.TimeOfDay, tempo);
-                LimparCampos(txtCodigo, txtTempo);
+                if (ValidarCampos(codigo, data, hora, tempo))
+                    AdicionarProduto(codigo, data, hora, tempo);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao salvar: {ex.Message}");
+                MessageBox.Show($"Erro: {ex.Message}",
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

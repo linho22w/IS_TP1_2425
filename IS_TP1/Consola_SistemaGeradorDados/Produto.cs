@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SistemaProducaoDesktop
+namespace gerador_de_dados
 {
     public class Produto
     {
@@ -12,12 +12,7 @@ namespace SistemaProducaoDesktop
         public DateTime Data_Producao { get; set; }
         public TimeSpan Hora_Producao { get; set; } 
         public int Tempo_Producao { get; set; }
-
-
         //public string Codigo_Resultado { get; set; }
-        //O Professor confirmou a ideologia do Trigger que gera os testes aquando a introdução de um novo produto.
-
-
 
         private static readonly Random random = new Random();
 
@@ -42,8 +37,7 @@ namespace SistemaProducaoDesktop
             //
 
             // Distribuição realista dos códigos de resultado
-            
-            //string codigoResultado = GerarCodigoResultado();
+           // string codigoResultado = GerarCodigoResultado();
 
             return new Produto
             {
@@ -51,7 +45,7 @@ namespace SistemaProducaoDesktop
                 Data_Producao = dataProducao,
                 Hora_Producao = horaProducao,
                 Tempo_Producao = tempoProducao,
-                //Codigo_Resultado = codigoResultado
+               // Codigo_Resultado = codigoResultado
             };
         }
 
