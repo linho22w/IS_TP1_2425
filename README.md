@@ -67,6 +67,7 @@ The OCR approach turned out to be more robust: it doesn't depend on window posit
 
 ```
 src/
+  IS_TP1.sln
   ProducaoAPI/                    ASP.NET Core REST API
   SistemaProducaoDesktop/         legacy production-line simulator (screen only)
   Consola_SistemaGeradorDados/    legacy console data source
@@ -76,7 +77,6 @@ database/
 automation/
   screen-click-automation/        SikuliX, image-pattern based
   ocr-text-capture/                SikuliX, OCR based
-IS_TP1.sln
 ```
 
 ## ▶️ Running it
@@ -85,7 +85,7 @@ This is a proof-of-concept built for a university assignment, not a deployable p
 
 1. Create the `Producao` and `Contabilidade` databases and run the scripts in `database/` (tables, then stored procedures, then triggers).
 2. Update the connection string in `src/ProducaoAPI/Controllers/*.cs` to point at your local SQL Server instance.
-3. Open `IS_TP1.sln` in Visual Studio and run `ProducaoAPI`, then `SistemaProducaoDesktop` or `Consola_SistemaGeradorDados`, then `SistemaLegado`.
+3. Open `src/IS_TP1.sln` in Visual Studio and run `ProducaoAPI`, then `SistemaProducaoDesktop` or `Consola_SistemaGeradorDados`, then `SistemaLegado`.
 4. Run one of the SikuliX scripts in `automation/` (needs the [SikuliX IDE](http://sikulix.com/)) to bridge the legacy source to the API.
 
 ## 👤 About
