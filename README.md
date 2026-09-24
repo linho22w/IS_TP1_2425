@@ -42,3 +42,52 @@ Since the legacy system can't expose an API, [SikuliX](http://sikulix.com/) (ima
 **`automation/ocr-text-capture/`**, OCR based. Selects a screen region over the console output, reads the text directly (SikuliX's built-in OCR), parses it, and posts straight to the REST API, skipping the intermediate form entirely.
 
 The OCR approach turned out to be more robust: it doesn't depend on window position or exact pixel matches, only on the text being readable.
+
+## 🗄️ Database
+
+- `database/tables/`, schema for `Produto`, `Testes` and `Custos_Peca`.
+- `database/stored-procedures/`, all data access from the API goes through these (insert, update, delete, select), never raw SQL from the controllers.
+- `database/triggers/`, automatic cost/profit/loss calculation whenever a production or test record is inserted or changed, and automatic generation of a default test result when a part has none yet.
+
+## 🛠️ Tech Stack
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=cs,dotnet,py" />
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/ASP.NET%20Core-512BD4?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/SQL%20Server-CC2927?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/REST%20API-2496ED?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/SikuliX-000000?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/OCR-00897B?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/WinForms-37474F?style=for-the-badge" />
+</p>
+
+## 📂 Repository structure
+
+```
+src/
+  ProducaoAPI/                    ASP.NET Core REST API
+  SistemaProducaoDesktop/         legacy production-line simulator (screen only)
+  Consola_SistemaGeradorDados/    legacy console data source
+  SistemaLegado/                  WinForms client that calls the API
+database/
+  tables/  stored-procedures/  triggers/
+automation/
+  screen-click-automation/        SikuliX, image-pattern based
+  ocr-text-capture/                SikuliX, OCR based
+IS_TP1.sln
+```
+
+## ▶️ Running it
+
+This is a proof-of-concept built for a university assignment, not a deployable product, so running it end to end needs SQL Server, SikuliX and Visual Studio locally. In short:
+
+1. Create the `Producao` and `Contabilidade` databases and run the scripts in `database/` (tables, then stored procedures, then triggers).
+2. Update the connection string in `src/ProducaoAPI/Controllers/*.cs` to point at your local SQL Server instance.
+3. Open `IS_TP1.sln` in Visual Studio and run `ProducaoAPI`, then `SistemaProducaoDesktop` or `Consola_SistemaGeradorDados`, then `SistemaLegado`.
+4. Run one of the SikuliX scripts in `automation/` (needs the [SikuliX IDE](http://sikulix.com/)) to bridge the legacy source to the API.
+
+## 👤 About
+
+Part of my portfolio. See my [GitHub profile](https://github.com/linho22w) for more projects in AI/ML and backend development.
